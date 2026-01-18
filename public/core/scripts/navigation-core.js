@@ -134,6 +134,8 @@ function setFormStep(options) {
 
     // Set initial step (without transition animations)
     async function setInitialStep(targetStepIndex) {
+        console.log('🎯 setInitialStep called for index:', targetStepIndex);
+        
         if (targetStepIndex < 0 || targetStepIndex >= stepSignatures.length) {
             console.error(`Invalid step index: ${targetStepIndex}`);
             if (callback) callback(false);
@@ -143,9 +145,11 @@ function setFormStep(options) {
         console.log(`Setting initial step to: ${stepSignatures[targetStepIndex].name}`);
 
         // Hide all step containers first (move to idle-container)
+        console.log('🔄 Hiding all non-target step containers...');
         for (let i = 0; i < stepSignatures.length; i++) {
             // Hide containers for non-target steps
             if (i !== targetStepIndex && stepContainers[i]) {
+                console.log(`Hiding containers for step ${i}:`, stepContainers[i]);
                 for (const item of stepContainers[i]) {
                     // Handle both string IDs and object configs
                     const containerId = typeof item === 'string' ? item : item.id;
@@ -156,20 +160,25 @@ function setFormStep(options) {
                     }));
 
                     if (container && container.length) {
+                        console.log(`✅ Found container ${containerId}, moving to idle`);
                         // Move to idle container
                         await __moveElement({
                             sourceElement: container,
                             targetElement: { id: "idle-container" },
                             moveInside: true
                         });
+                    } else {
+                        console.log(`⚠️ Container ${containerId} not found`);
                     }
                 }
             }
         }
 
         // Now show the target step containers
+        console.log('🔄 Showing target step containers for step', targetStepIndex);
         const targetContainerConfigs = stepContainers[targetStepIndex];
         if (targetContainerConfigs) {
+            console.log('Target containers config:', targetContainerConfigs);
             for (const item of targetContainerConfigs) {
                 // Handle both string IDs and object configs
                 const containerId = typeof item === 'string' ? item : item.id;
@@ -177,25 +186,31 @@ function setFormStep(options) {
                     ? { textContent: stepSignatures[targetStepIndex].textIdentifier }
                     : item.target;
                 
+                console.log(`Looking for container ${containerId}...`);
                 const container = await Promise.resolve(__findElement({
                     id: containerId,
                     useTimeout: true
                 }));
 
                 if (container && container.length) {
+                    console.log(`✅ Found container ${containerId}, moving to target`, target);
                     await __moveElement({
                         sourceElement: container,
                         targetElement: target,
                         useTimeout: true,
                         maxRetries: 20
                     });
+                } else {
+                    console.log(`⚠️ Container ${containerId} not found`);
                 }
             }
         }
 
         // Process any hiding operations for the target step
+        console.log('🔄 Processing hideElements for target step...');
         await processHideElements(stepSignatures[targetStepIndex]);
 
+        console.log('✅ Initial step setup complete');
         if (callback) callback(true);
         return true;
     }
