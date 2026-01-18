@@ -247,9 +247,14 @@ function setFormStep(options) {
         await processHideElements(stepSignatures[toStep]);
 
         // Execute step-specific handlers if they exist
+        console.log(`🔍 Checking for handler on step ${toStep} (${stepSignatures[toStep].name})...`);
         const stepHandler = stepSignatures[toStep].handler;
         if (stepHandler && typeof stepHandler === 'function') {
+            console.log(`✅ Handler found, executing for step: ${stepSignatures[toStep].name}`);
             await stepHandler();
+            console.log(`✅ Handler completed for step: ${stepSignatures[toStep].name}`);
+        } else {
+            console.log(`ℹ️ No handler defined for step: ${stepSignatures[toStep].name}`);
         }
 
         if (callback) callback(true);
