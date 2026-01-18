@@ -119,15 +119,18 @@ function setFormStep(options) {
             }
 
             if (element && element.length > 0) {
+                console.log(`Processing hideElement for "${text}" with operation "${operation}"`);
                 // Execute the operation
                 if (operation === "hideParentDiv") {
-                    const parentDiv = element.closest('div');
-                    if (parentDiv && parentDiv.length > 0) {
-                        parentDiv.hide();
-                    }
+                    // Use the exact same approach as the original code
+                    element.closest('div.de2bf75_1m5yg2g0').hide();
+                    console.log(`✅ Hidden parent div for "${text}"`);
                 } else if (operation === "hide") {
                     element.hide();
+                    console.log(`✅ Hidden element "${text}"`);
                 }
+            } else {
+                console.log(`⚠️ Element not found for "${text}"`);
             }
         }
     }
