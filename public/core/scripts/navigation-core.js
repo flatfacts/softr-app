@@ -255,6 +255,8 @@ function setFormStep(options) {
 
     // Main execution
     async function execute() {
+        console.log('🚀 execute() called with stepIndex:', stepIndex, 'stepName:', stepName, 'direction:', direction);
+        
         // If stepIndex or stepName is provided, set initial step
         if (stepIndex !== undefined || stepName !== undefined) {
             let targetStepIndex = stepIndex;
@@ -269,11 +271,13 @@ function setFormStep(options) {
                 }
             }
 
+            console.log('📍 Calling setInitialStep with index:', targetStepIndex);
             // Set initial step
             return setInitialStep(targetStepIndex);
         }
 
         // Otherwise handle transitions based on direction
+        console.log('🔄 No stepIndex provided, detecting current step...');
         const currentStep = await detectCurrentStep();
 
         if (currentStep === -1) {
