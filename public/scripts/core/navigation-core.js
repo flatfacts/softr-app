@@ -1,0 +1,371 @@
+/**
+ * FlatFacts Navigation Core
+ * Reusable navigation framework for multi-step forms
+ * @version 1.0.0
+ * @requires jQuery
+ * @requires common-helpers.js
+ */
+
+/**
+ * Global object to track current step transition
+ */
+window.currentStepInfo = {
+    fromStep: null,
+    toStep: null
+};
+
+/**
+ * Form step manager with comprehensive functionality and validation
+ * This function should be called with a configuration object specific to each page
+ * 
+ * @param {Object} options - Configuration options
+ * @param {string} [options.direction] - "next" or "previous" for transitions
+ * @param {number} [options.stepIndex] - Direct step index to set
+ * @param {string} [options.stepName] - Name of step to set
+ * @param {Function} [options.callback] - Optional callback when operation completes
+ * @param {Array} options.stepSignatures - Array of step configurations (required, provided by page-specific config)
+ * @param {Object} options.transitions - Transition definitions (required, provided by page-specific config)
+ * @param {Object} options.stepContainers - Container mappings (required, provided by page-specific config)
+ */
+function setFormStep(options) {
+    // Handle string input for backward compatibility
+    if (typeof options === 'string') {
+        options = { direction: options };
+    }
+
+    const { direction, stepIndex, stepName, callback, stepSignatures, transitions, stepContainers } = options;
+
+    // Validation: Ensure required configurations are provided
+    if (!stepSignatures || !Array.isArray(stepSignatures) || stepSignatures.length === 0) {
+        console.error('setFormStep: stepSignatures configuration is required');
+        if (callback) callback(false);
+        return;
+    }
+
+    if (!transitions || typeof transitions !== 'object') {
+        console.error('setFormStep: transitions configuration is required');
+        if (callback) callback(false);
+        return;
+    }
+
+    if (!stepContainers || typeof stepContainers !== 'object') {
+        console.error('setFormStep: stepContainers configuration is required');
+        if (callback) callback(false);
+        return;
+    }
+
+    // Helper function to get step index by name
+    function getStepIndexByName(name) {
+        for (let i = 0; i < stepSignatures.length; i++) {
+            if (stepSignatures[i].name === name) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    // Helper function to detect the current step
+    async function detectCurrentStep() {
+        for (let i = 0; i < stepSignatures.length; i++) {
+            const signature = stepSignatures[i];
+
+            // Try to find an element matching this step's identifier
+            const element = await Promise.resolve(__findElement({
+                textContent: signature.textIdentifier,
+                useTimeout: false // Quick check
+            }));
+
+            if (element && element.length > 0 && element.is(":visible")) {
+                return i; // Return the index of the matched step
+            }
+        }
+
+        return -1; // No matching step found
+    }
+
+    // Validate the current step before transitioning
+    async function validateCurrentStep(currentStepIndex) {
+        const currentStep = stepSignatures[currentStepIndex];
+
+        // If the step has a validation function, execute it
+        if (currentStep && typeof currentStep.validate === 'function') {
+            return currentStep.validate();
+        }
+
+        // If no validation function exists, consider it valid
+        return true;
+    }
+
+    // Helper function to hide elements based on criteria with retry logic
+    async function processHideElements(step) {
+        if (!step.hideElements || !step.hideElements.length) return;
+
+        for (const hideConfig of step.hideElements) {
+            const { type, text, operation } = hideConfig;
+
+            let element = null;
+
+            // Find the element based on type
+            if (type === "labelContaining") {
+                element = await Promise.resolve(__findElement({
+                    labelContent: text,
+                    useTimeout: true,
+                    maxRetries: 20
+                }));
+            }
+
+            if (element && element.length > 0) {
+                // Execute the operation
+                if (operation === "hideParentDiv") {
+                    const parentDiv = element.closest('div');
+                    if (parentDiv && parentDiv.length > 0) {
+                        parentDiv.hide();
+                    }
+                } else if (operation === "hide") {
+                    element.hide();
+                }
+            }
+        }
+    }
+
+    // Set initial step (without transition animations)
+    async function setInitialStep(targetStepIndex) {
+        if (targetStepIndex < 0 || targetStepIndex >= stepSignatures.length) {
+            console.error(`Invalid step index: ${targetStepIndex}`);
+            if (callback) callback(false);
+            return false;
+        }
+
+        console.log(`Setting initial step to: ${stepSignatures[targetStepIndex].name}`);
+
+        // Hide all step containers first
+        for (let i = 0; i < stepSignatures.length; i++) {
+            // Hide containers for non-target steps
+            if (i !== targetStepIndex && stepContainers[i]) {
+                for (const containerId of stepContainers[i]) {
+                    const container = await Promise.resolve(__findElement({
+                        id: containerId,
+                        useTimeout: false
+                    }));
+
+                    if (container && container.length) {
+                        // Move to idle container
+                        await __moveElement({
+                            sourceElement: container,
+                            targetElement: { id: "idle-container" },
+                            moveInside: true
+                        });
+                    }
+                }
+            }
+        }
+
+        // Now show the target step containers
+        const targetContainerConfigs = stepContainers[targetStepIndex];
+        if (targetContainerConfigs) {
+            for (const item of targetContainerConfigs) {
+                const container = await Promise.resolve(__findElement({
+                    id: item.id,
+                    useTimeout: true
+                }));
+
+                if (container && container.length) {
+                    await __moveElement({
+                        sourceElement: container,
+                        targetElement: item.target,
+                        useTimeout: true,
+                        maxRetries: 20
+                    });
+                }
+            }
+        }
+
+        // Process any hiding operations for the target step
+        await processHideElements(stepSignatures[targetStepIndex]);
+
+        if (callback) callback(true);
+        return true;
+    }
+
+    // Transition between steps
+    async function transitionToStep(fromStep, toStep) {
+        
+        // Store step transition info globally
+        window.currentStepInfo = {
+            fromStep: fromStep,
+            toStep: toStep
+        };
+
+        console.log(`Transitioning from ${stepSignatures[fromStep].name} to ${stepSignatures[toStep].name}`);
+
+        const transitionKey = `${fromStep}-${toStep}`;
+        const transitionSteps = transitions[transitionKey];
+
+        if (!transitionSteps) {
+            console.error(`No transition defined for ${transitionKey}`);
+            if (callback) callback(false);
+            return false;
+        }
+
+        // Execute each move operation in sequence
+        for (const step of transitionSteps) {
+            await __moveElement(step);
+        }
+
+        // Process any hiding operations for the target step
+        await processHideElements(stepSignatures[toStep]);
+
+        // Execute step-specific handlers if they exist
+        const stepHandler = stepSignatures[toStep].handler;
+        if (stepHandler && typeof stepHandler === 'function') {
+            await stepHandler();
+        }
+
+        if (callback) callback(true);
+        return true;
+    }
+
+    // Main execution
+    async function execute() {
+        // If stepIndex or stepName is provided, set initial step
+        if (stepIndex !== undefined || stepName !== undefined) {
+            let targetStepIndex = stepIndex;
+
+            // If step name is provided, convert to index
+            if (stepName !== undefined) {
+                targetStepIndex = getStepIndexByName(stepName);
+                if (targetStepIndex === -1) {
+                    console.error(`Step name not found: ${stepName}`);
+                    if (callback) callback(false);
+                    return;
+                }
+            }
+
+            // Set initial step
+            return setInitialStep(targetStepIndex);
+        }
+
+        // Otherwise handle transitions based on direction
+        const currentStep = await detectCurrentStep();
+
+        if (currentStep === -1) {
+            console.error("Could not determine current step");
+            if (callback) callback(false);
+            return;
+        }
+
+        console.log(`Current step: ${stepSignatures[currentStep].name}`);
+
+        let targetStep;
+        if (direction.toLowerCase() === "next") {
+            // Validate current step before moving to next
+            const isValid = await validateCurrentStep(currentStep);
+            if (!isValid) {
+                console.log("Validation failed. Staying on current step.");
+                if (callback) callback(false);
+                return;
+            }
+
+            targetStep = currentStep + 1;
+        } else if (direction.toLowerCase() === "previous") {
+            // No validation needed when going back
+            targetStep = currentStep - 1;
+        } else {
+            console.error("Invalid direction. Use 'next' or 'previous'");
+            if (callback) callback(false);
+            return;
+        }
+
+        // Check if target step exists
+        if (targetStep < 0 || targetStep >= stepSignatures.length) {
+            console.error(`Invalid step transition: ${currentStep} to ${targetStep}`);
+            if (callback) callback(false);
+            return;
+        }
+
+        // Perform the transition
+        await transitionToStep(currentStep, targetStep);
+    }
+
+    // Start execution
+    execute();
+}
+
+/**
+ * Attach navigation button listeners
+ * This should be called after the form is loaded
+ * 
+ * @param {string} formSelector - jQuery selector for the form container
+ */
+function attachNavigationListeners(formSelector, navigationConfig) {
+    // Function to attach click events to buttons with "Next" or "Previous" text
+    function attachButtonListeners() {
+        $(`${formSelector} button`).each(function () {
+            const buttonText = $(this).text();
+
+            // Check if the button contains "Next" or "Previous"
+            if (buttonText.includes('Next') || buttonText.includes('Previous') || buttonText.includes('Finish')) {
+                $(this).off('click').on('click', function () {
+                    console.log(buttonText + ' button clicked');
+
+                    if (buttonText.includes('Next')) {
+                        setFormStep({
+                            direction: "next",
+                            ...navigationConfig,
+                            callback: function (result) {
+                                if (result) console.log("Successfully moved to next step");
+                                else console.log("Failed to move to next step");
+                            }
+                        });
+                    }
+
+                    if (buttonText.includes('Previous')) {
+                        setFormStep({
+                            direction: "previous",
+                            ...navigationConfig,
+                            callback: function (result) {
+                                if (result) console.log("Successfully moved to previous step");
+                                else console.log("Failed to move to previous step");
+                            }
+                        });
+                    }
+
+                    if (buttonText.includes('Finish')) {
+                        setFormStep({
+                            direction: "next",
+                            ...navigationConfig,
+                            callback: function (result) {
+                                if (result) console.log("Successfully moved to next step");
+                                else console.log("Failed to move to previous step");
+                            }
+                        });
+                    }
+
+                    // Check for new buttons after a delay, if necessary
+                    checkForNewButtons();
+                });
+            }
+        });
+    }
+
+    // Function to repeatedly check for buttons with "Next", "Previous" or "Finish" text
+    function checkForNewButtons() {
+        const intervalId = setInterval(function () {
+            // Select any new buttons that might appear
+            const newButtons = $(`${formSelector} button`).filter(function () {
+                const buttonText = $(this).text();
+                return buttonText.includes('Next') || buttonText.includes('Previous') || buttonText.includes('Finish');
+            });
+
+            if (newButtons.length > 0) {
+                // Attach listeners to the new buttons
+                attachButtonListeners();
+
+                // Clear the interval once buttons are found and listeners are attached
+                clearInterval(intervalId);
+            }
+        }, 500); // Check every 500 milliseconds (you can adjust the delay)
+    }
+
+    attachButtonListeners();
+}

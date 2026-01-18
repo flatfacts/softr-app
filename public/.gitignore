@@ -1,0 +1,20 @@
+# FlatFacts CDN - .gitignore
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.bak
+*.log
+
+# Don't ignore anything in public/ - we want to deploy everything
+# (Remove this comment if you have specific files to ignore)

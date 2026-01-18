@@ -1,0 +1,134 @@
+<!-- Common HTML Elements for FlatFacts Forms -->
+<!-- These elements are shared across multiple pages -->
+
+<!-- Notification Components -->
+<div id="form-notification-container"></div>
+<div id="form-notification"></div>
+
+<!-- Idle Container - Used to store hidden elements between form stages -->
+<div id="idle-container" style="display: none;"></div>
+
+<!-- Address Finder Container -->
+<div id="find-address-container">
+    <input type="text" id="valid-address" name="valid-address" style="display: none;">
+    <div id="input-address-container" name="input-address-container">
+        <span class="search-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+        </span>
+        <input type="text" id="input-type-address" name="input-type-address" placeholder="">
+        <button type="button" id="btn-clear-address">✕</button>
+    </div>
+</div>
+
+<!-- Email Verification Container -->
+<div id="email-verification-container">
+    <div id="code-links-container">
+        <div>
+            <a id="send-code-link">Verify Email</a>
+            <div id="validation-success">
+                <span class="success-icon">✓</span>
+                <span>Email Validated</span>
+            </div>
+        </div>
+        <a id="change-email-link">Change email</a>
+    </div>
+
+    <div id="code-container">
+        <input type="text" class="code-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+        <input type="text" class="code-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+        <input type="text" class="code-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+        <input type="text" class="code-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+        <input type="text" class="code-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+        <input type="text" class="code-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+    </div>
+</div>
+
+<!-- Social Share Buttons -->
+<div id="e-social-share-container">
+    <h2>Share FlatFacts.co.uk</h2>
+    <ul class="e-social-share" data-test="social-share">
+        <li class="e-social-share__provider copy-link" data-js="copy-link" data-test="copy-link">
+            <div class="e-social-share__link">
+                <div class="e-social-share__icon-wrapper" data-js="icon-wrapper">
+                    <svg class="initial-icon e-social-share__icon" width="20" height="20" viewBox="0 0 20 20"
+                        fill="transparent" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M7 4.5V4C7 2.89543 7.89543 2 9 2H16C17.1046 2 18 2.89543 18 4V11C18 12.1046 17.1046 13 16 13H9C7.89543 13 7 12.1046 7 11V9.5"
+                            stroke="#3277ff" stroke-width="1.25" stroke-linecap="round"></path>
+                        <path
+                            d="M13 15.5L13 16C13 17.1046 12.1046 18 11 18L4 18C2.89543 18 2 17.1046 2 16L2 9C2 7.89543 2.89543 7 4 7L11 7C12.1046 7 13 7.89543 13 9L13 10.5"
+                            stroke="#3277ff" stroke-width="1.25" stroke-linecap="round"></path>
+                    </svg>
+                    <svg class="copied-icon e-social-share__icon" xmlns="http://www.w3.org/2000/svg" width="20"
+                        height="20" viewBox="0 0 20 20" fill="none" style="display: none;">
+                        <path d="M3 10.5556L7.30769 15L17 5" stroke="white" stroke-width="1.25" stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                    </svg>
+                </div>
+                <p class="provider-name" data-js="copy-link-provider-name">Copy link</p>
+            </div>
+        </li>
+        <li class="e-social-share__provider e-social-share__provider--twitter">
+            <a id="twitter-share" href="#" target="_blank" rel="nofollow noopener" class="e-social-share__link">
+                <div class="e-social-share__icon-wrapper">
+                    <svg class="e-social-share__icon" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
+                        height="20px" width="20px" style="fill:transparent">
+                        <title>X Icon</title>
+                        <path
+                            d="M11.4894 8.77491L17.3177 2H15.9366L10.8759 7.88256L6.83392 2H2.172L8.28424 10.8955L2.172 18H3.55319L8.89742 11.7878L13.166 18H17.828L11.4891 8.77491H11.4894ZM9.59768 10.9738L8.97839 10.0881L4.05086 3.03974H6.17229L10.1489 8.72795L10.7682 9.61374L15.9372 17.0075H13.8158L9.59768 10.9742V10.9738Z"
+                            class="e-social-share__icon-foreground"></path>
+                    </svg>
+                </div>
+                <p class="provider-name">twitter</p>
+            </a>
+        </li>
+        <li class="e-social-share__provider e-social-share__provider--facebook">
+            <a id="facebook-share" href="#" target="_blank" rel="nofollow noopener" class="e-social-share__link">
+                <div class="e-social-share__icon-wrapper">
+                    <svg class="e-social-share__icon" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
+                        height="20px" width="20px" style="fill:transparent">
+                        <title>Facebook Icon</title>
+                        <path
+                            d="M11.1973 18V10.7122H13.5654L13.9202 7.85967H11.1973V6.04325C11.1973 5.21877 11.4173 4.65746 12.5561 4.65746H14V2.11226C13.7481 2.07729 12.8878 2 11.8856 2C9.79246 2 8.3592 3.32505 8.3592 5.75983V7.85967H6V10.7122H8.3592V18H11.1973Z"
+                            class="e-social-share__icon-foreground"></path>
+                    </svg>
+                </div>
+                <p class="provider-name">facebook</p>
+            </a>
+        </li>
+        <li class="e-social-share__provider e-social-share__provider--whatsapp">
+            <a id="whatsapp-share" href="#" target="_blank" rel="nofollow noopener" class="e-social-share__link">
+                <div class="e-social-share__icon-wrapper">
+                    <svg class="e-social-share__icon" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
+                        height="20px" width="20px" style="fill:transparent">
+                        <title>WhatsApp Icon</title>
+                        <path
+                            d="M15.6687 4.32503C14.1648 2.82646 12.1647 2.00076 10.0336 2C5.64227 2 2.06838 5.55636 2.06685 9.92777C2.06608 11.3252 2.43318 12.6892 3.13031 13.8913L2 18L6.22327 16.8975C7.38681 17.5294 8.69703 17.862 10.0302 17.8624H10.0336C10.0332 17.8624 10.034 17.8624 10.0336 17.8624C14.4242 17.8624 17.9985 14.3056 18 9.93423C18.0008 7.81563 17.173 5.82361 15.6687 4.32503ZM10.0336 16.5235H10.0309C8.84295 16.5231 7.67751 16.2053 6.66065 15.605L6.41885 15.4621L3.91262 16.1163L4.58148 13.6845L4.4241 13.4351C3.76135 12.3859 3.41107 11.1732 3.41183 9.92815C3.41336 6.295 6.38371 3.33891 10.0363 3.33891C11.8049 3.33967 13.4673 4.02585 14.7176 5.27162C15.9678 6.51701 16.6558 8.17297 16.655 9.93347C16.6535 13.567 13.6831 16.5235 10.0336 16.5235ZM13.6656 11.5879C13.4666 11.4887 12.4879 11.0097 12.3053 10.9435C12.1227 10.8774 11.9902 10.8443 11.8576 11.0428C11.7251 11.2412 11.3435 11.6875 11.2273 11.8194C11.1112 11.9517 10.9951 11.9681 10.7961 11.8688C10.597 11.7696 9.95569 11.5605 9.19515 10.8858C8.60345 10.3604 8.20389 9.71184 8.08776 9.5134C7.97164 9.31496 8.07554 9.20776 8.17486 9.10929C8.26424 9.02034 8.37387 8.87778 8.47357 8.76221C8.57327 8.64665 8.60612 8.56377 8.67259 8.43186C8.73905 8.29956 8.70582 8.184 8.65616 8.08477C8.6065 7.98555 8.20847 7.01045 8.04231 6.61395C7.88072 6.22771 7.71647 6.28017 7.59461 6.27371C7.47849 6.26801 7.34594 6.26687 7.21301 6.26687C7.08046 6.26687 6.86463 6.31629 6.68204 6.51473C6.49945 6.71317 5.98529 7.19255 5.98529 8.16727C5.98529 9.14237 6.69847 10.0844 6.79817 10.2167C6.89787 10.349 8.20198 12.3497 10.1986 13.2081C10.6734 13.4123 11.0444 13.5343 11.3335 13.6255C11.8102 13.7765 12.2442 13.7552 12.5872 13.7042C12.9696 13.6472 13.7649 13.2249 13.9307 12.7622C14.0965 12.2996 14.0965 11.9027 14.0468 11.8202C13.9971 11.7369 13.8646 11.6871 13.6656 11.5879Z"
+                            class="e-social-share__icon-foreground"></path>
+                    </svg>
+                </div>
+                <p class="provider-name">whatsapp</p>
+            </a>
+        </li>
+        <li class="e-social-share__provider e-social-share__provider--email">
+            <a id="email-share" href="#" target="_blank" rel="nofollow noopener" class="e-social-share__link">
+                <div class="e-social-share__icon-wrapper">
+                    <svg class="icon-email" width="18" height="14" viewBox="0 0 18 14"
+                        xmlns="http://www.w3.org/2000/svg" style="fill:transparent">
+                        <path
+                            d="M1 12V2C1 1.44772 1.44772 1 2 1H16C16.5523 1 17 1.44772 17 2V12C17 12.5523 16.5523 13 16 13H2C1.44772 13 1 12.5523 1 12Z"
+                            stroke="#3277ff" stroke-width="1.25"></path>
+                        <path d="M1 1L7.58579 7.58579C8.36684 8.36684 9.63317 8.36683 10.4142 7.58579L17 1"
+                            stroke="#3277ff" stroke-width="1.25"></path>
+                        <path d="M1 13L7 7M17 13L11 7" stroke="#3277ff" stroke-width="1.25"></path>
+                    </svg>
+                </div>
+                <p class="provider-name">email</p>
+            </a>
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,118 @@
+/**
+ * Social Share Component Styles
+ * Styles for social sharing buttons
+ * @version 1.0.0
+ */
+
+/* Container */
+#e-social-share-container {
+  text-align: center;
+}
+
+#e-social-share-container h2 {
+  font-size: 1.20em;
+  font-weight: 700;
+  text-align: center;
+  font-family: 'Montserrat';
+  color: #3278ff;
+  margin: 15px 0px 15px 0px;
+}
+
+/* Social share list */
+.e-social-share {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  width: auto;
+  gap: 0;
+  margin: 0 auto;
+  padding: 0;
+  justify-content: center;
+}
+
+/* Icon wrapper */
+.e-social-share__icon-wrapper {
+  align-items: center;
+  background-color: #f2f2f2;
+  border-radius: 50%;
+  cursor: pointer;
+  display: inline-flex;
+  height: 40px;
+  justify-content: center;
+  padding: 6px;
+  width: 40px;
+  margin-right: 0;
+}
+
+/* List items */
+.e-social-share li {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+/* SVG icons */
+.e-social-share svg {
+  fill: #3277ff;
+  height: 20px;
+  width: 20px;
+}
+
+/* Hidden provider names */
+.e-social-share .copy-link,
+.e-social-share .provider-name,
+.e-social-share__copy-link,
+.e-social-share__provider-name {
+  display: none;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+/* Link styling */
+.e-social-share__link {
+  align-items: center;
+  display: flex;
+  text-decoration: none;
+}
+
+.e-social-share__link-icon.icon-email path,
+.e-social-share__link-icon.initial-icon path {
+  fill: #3277ff;
+}
+
+/* Hover and clicked states */
+.e-social-share__link.clicked .e-social-share__icon-wrapper,
+.e-social-share__link.clicked svg,
+.e-social-share__link:hover .e-social-share__icon-wrapper,
+.e-social-share__link:hover svg {
+  background-color: #3277ff;
+}
+
+.e-social-share__link.clicked svg.icon-email path,
+.e-social-share__link.clicked svg.initial-icon path,
+.e-social-share__link:hover svg.icon-email path,
+.e-social-share__link:hover svg.initial-icon path {
+  stroke: #fff;
+}
+
+.e-social-share__link:hover .provider-name {
+  text-decoration: underline;
+}
+
+/* Copy animation */
+.e-social-share__link.clicked .initial-icon {
+  display: none;
+}
+
+.e-social-share__link.clicked .copied-icon {
+  display: block !important;
+}
+
+/* Icon foreground colors */
+.e-social-share__icon-foreground {
+  fill: #3277ff;
+}
+
+.e-social-share__link:hover .e-social-share__icon-foreground,
+.e-social-share__link.clicked .e-social-share__icon-foreground {
+  fill: #fff;
+}

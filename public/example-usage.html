@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlatFacts CDN - Usage Example</title>
+    
+    <!-- jQuery (Required Dependency) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- ============================================ -->
+    <!-- CORE CSS FILES (Required for all pages) -->
+    <!-- ============================================ -->
+    <link rel="stylesheet" href="https://cdn.flatfacts.co.uk/styles/core/form-helpers.css?v=1.0.0">
+    <link rel="stylesheet" href="https://cdn.flatfacts.co.uk/styles/core/address-finder.css?v=1.0.0">
+    <link rel="stylesheet" href="https://cdn.flatfacts.co.uk/styles/core/email-verification.css?v=1.0.0">
+    <link rel="stylesheet" href="https://cdn.flatfacts.co.uk/styles/core/social-share.css?v=1.0.0">
+    
+    <!-- ============================================ -->
+    <!-- PAGE-SPECIFIC CSS (Add as needed) -->
+    <!-- ============================================ -->
+    <!-- For report-flat page: -->
+    <link rel="stylesheet" href="https://cdn.flatfacts.co.uk/styles/pages/category-selection.css?v=1.0.0">
+    <link rel="stylesheet" href="https://cdn.flatfacts.co.uk/styles/pages/score-entry.css?v=1.0.0">
+    
+</head>
+<body>
+
+    <!-- Your page content here -->
+    <div id="form-report-flat">
+        <h1>Report Flat Form</h1>
+        
+        <!-- Form steps will be injected here by your 3rd party tool -->
+        
+    </div>
+
+    <!-- ============================================ -->
+    <!-- CORE JAVASCRIPT FILES (Required for all pages) -->
+    <!-- ============================================ -->
+    <script src="https://cdn.flatfacts.co.uk/scripts/core/common-helpers.js?v=1.0.0"></script>
+    <script src="https://cdn.flatfacts.co.uk/scripts/core/navigation-core.js?v=1.0.0"></script>
+    
+    <!-- ============================================ -->
+    <!-- PAGE-SPECIFIC JAVASCRIPT -->
+    <!-- ============================================ -->
+    <!-- For report-flat page: -->
+    <script src="https://cdn.flatfacts.co.uk/scripts/pages/report-flat/navigation-config.js?v=1.0.0"></script>
+    
+    <!-- ============================================ -->
+    <!-- PAGE-SPECIFIC EXTERNAL DEPENDENCIES -->
+    <!-- ============================================ -->
+    <!-- Address autocomplete (only for pages with address input) -->
+    <script src="https://cdn.getaddress.io/scripts/getaddress-autocomplete-3.1.6.js"></script>
+    
+    <!-- UUID generator (only for pages that need it) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js"></script>
+    
+    <!-- ============================================ -->
+    <!-- YOUR PAGE-SPECIFIC LOGIC -->
+    <!-- ============================================ -->
+    <script>
+        // Example: Show a notification
+        __showNotification('Page loaded successfully!', 3000);
+        
+        // Example: Find an element
+        __findElement({
+            id: 'my-element',
+            useTimeout: true,
+            callback: (element) => {
+                if (element) {
+                    console.log('Element found:', element);
+                }
+            }
+        });
+        
+        // Example: Initialize navigation for report-flat page
+        // (This is already handled by navigation-config.js, but showing for reference)
+        window.addEventListener('block-loaded-form-report-flat', () => {
+            // Navigation is automatically initialized
+            console.log('Navigation ready!');
+        });
+    </script>
+    
+    <!-- ============================================ -->
+    <!-- DEVELOPMENT CACHE-BUSTING (Optional) -->
+    <!-- ============================================ -->
+    <!-- Uncomment during development to avoid caching issues -->
+    <!--
+    <script>
+        // Reload scripts with dynamic version to bypass cache
+        const isDev = true;
+        const devVersion = Date.now();
+        
+        if (isDev) {
+            console.log('Development mode - cache busting enabled');
+            console.log('Version:', devVersion);
+        }
+        
+        // Example of dynamic loading (use this pattern if needed)
+        // const scriptUrl = `https://cdn.flatfacts.co.uk/scripts/core/common-helpers.js?v=${isDev ? devVersion : '1.0.0'}`;
+        // document.write(`<script src="${scriptUrl}"><\/script>`);
+    </script>
+    -->
+
+</body>
+</html>
