@@ -338,15 +338,22 @@ function setFormStep(options) {
  * @param {string} formSelector - jQuery selector for the form container
  */
 function attachNavigationListeners(formSelector, navigationConfig) {
+    console.log('🔗 attachNavigationListeners called with selector:', formSelector);
+    
     // Function to attach click events to buttons with "Next" or "Previous" text
     function attachButtonListeners() {
-        $(`${formSelector} button`).each(function () {
+        const buttons = $(`${formSelector} button`);
+        console.log(`🔍 Found ${buttons.length} buttons in ${formSelector}`);
+        
+        buttons.each(function () {
             const buttonText = $(this).text();
+            console.log('  Button text:', buttonText);
 
             // Check if the button contains "Next" or "Previous"
             if (buttonText.includes('Next') || buttonText.includes('Previous') || buttonText.includes('Finish')) {
+                console.log(`  ✅ Attaching listener to button: "${buttonText}"`);
                 $(this).off('click').on('click', function () {
-                    console.log(buttonText + ' button clicked');
+                    console.log(`🖱️ ${buttonText} button clicked`);
 
                     if (buttonText.includes('Next')) {
                         setFormStep({
