@@ -4,6 +4,8 @@
  * @requires common-helpers.js
  */
 
+console.log('🔄 navigation-config.js loaded at', new Date().toISOString());
+
 // Custom update fields function for this page
 function __updateFields(fieldsObj) {
     const updateFieldsObj = new CustomEvent('update-fields-form-report-flat', {
@@ -339,6 +341,12 @@ const REPORT_FLAT_NAV_CONFIG = {
 
 // Initialize navigation when form is loaded
 window.addEventListener('block-loaded-form-report-flat', () => {
+    // Ensure setFormStep is available
+    if (typeof setFormStep === 'undefined') {
+        console.error('setFormStep is not defined. Make sure navigation-core.js is loaded before navigation-config.js');
+        return;
+    }
+    
     // Set initial step
     setFormStep({
         stepIndex: 0,

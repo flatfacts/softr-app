@@ -1,0 +1,59 @@
+<!-- CDN Loader - Development Mode (No Cache) -->
+<script>
+  // Generate random version for cache busting
+  const v = Date.now();
+  const baseURL = 'https://cdn.flatfacts.co.uk/public/';
+  
+  // Helper function to load CSS (can be parallel)
+  function loadCSS(path) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = `${baseURL}${path}?v=${v}`;
+    document.head.appendChild(link);
+  }
+  
+  // Helper function to load JS sequentially
+  function loadJS(path) {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = `${baseURL}${path}?v=${v}`;
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+  }
+  
+  // Load scripts in sequence
+  async function loadScripts() {
+    try {
+      // Load core scripts first (in order)
+      await loadJS('core/scripts/common-helpers.js');
+      console.log('✅ common-helpers.js loaded');
+      
+      await loadJS('core/scripts/navigation-core.js');
+      console.log('✅ navigation-core.js loaded');
+      
+      // Load page-specific script last
+      await loadJS('pages/report-flat/scripts/navigation-config.js');
+      console.log('✅ navigation-config.js loaded');
+      
+      // Fire ready event
+      window.dispatchEvent(new Event('flatfacts-scripts-ready'));
+      console.log('🚀 All scripts ready');
+      
+    } catch (error) {
+      console.error('❌ Failed to load scripts:', error);
+    }
+  }
+  
+  // Load CSS (parallel is fine)
+  loadCSS('core/styles/form-helpers.css');
+  loadCSS('core/styles/address-finder.css');
+  loadCSS('core/styles/email-verification.css');
+  loadCSS('core/styles/social-share.css');
+  loadCSS('pages/report-flat/styles/category-selection.css');
+  loadCSS('pages/report-flat/styles/score-entry.css');
+  
+  // Load JS (sequential)
+  loadScripts();
+</script>

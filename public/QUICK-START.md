@@ -41,6 +41,24 @@ public/
 ## 🎬 Usage
 
 ### Report Flat
+
+**🔧 Development (no cache)**
+```html
+<!-- Styles -->
+<link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/core/styles/form-helpers.css">
+<link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/core/styles/address-finder.css">
+<link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/core/styles/email-verification.css">
+<link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/core/styles/social-share.css">
+<link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/pages/report-flat/styles/category-selection.css">
+<link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/pages/report-flat/styles/score-entry.css">
+
+<!-- Scripts -->
+<script src="https://cdn.flatfacts.co.uk/public/core/scripts/common-helpers.js"></script>
+<script src="https://cdn.flatfacts.co.uk/public/core/scripts/navigation-core.js"></script>
+<script src="https://cdn.flatfacts.co.uk/public/pages/report-flat/scripts/navigation-config.js"></script>
+```
+
+**🚀 Production (versioned)**
 ```html
 <!-- Styles -->
 <link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/core/styles/form-helpers.css?v=1.0.0">
@@ -56,7 +74,25 @@ public/
 <script src="https://cdn.flatfacts.co.uk/public/pages/report-flat/scripts/navigation-config.js?v=1.0.0"></script>
 ```
 
+---
+
 ### Claim Ownership
+
+**🔧 Development (no cache)**
+```html
+<!-- Styles -->
+<link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/core/styles/form-helpers.css">
+<link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/core/styles/address-finder.css">
+<link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/core/styles/email-verification.css">
+<link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/core/styles/social-share.css">
+
+<!-- Scripts -->
+<script src="https://cdn.flatfacts.co.uk/public/core/scripts/common-helpers.js"></script>
+<script src="https://cdn.flatfacts.co.uk/public/core/scripts/navigation-core.js"></script>
+<script src="https://cdn.flatfacts.co.uk/public/pages/claim-ownership/scripts/navigation-config.js"></script>
+```
+
+**🚀 Production (versioned)**
 ```html
 <!-- Styles -->
 <link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/core/styles/form-helpers.css?v=1.0.0">
@@ -70,7 +106,23 @@ public/
 <script src="https://cdn.flatfacts.co.uk/public/pages/claim-ownership/scripts/navigation-config.js?v=1.0.0"></script>
 ```
 
+---
+
 ### Search Flat
+
+**🔧 Development (no cache)**
+```html
+<!-- Styles -->
+<link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/core/styles/form-helpers.css">
+<link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/core/styles/address-finder.css">
+
+<!-- Scripts -->
+<script src="https://cdn.flatfacts.co.uk/public/core/scripts/common-helpers.js"></script>
+<script src="https://cdn.flatfacts.co.uk/public/core/scripts/navigation-core.js"></script>
+<script src="https://cdn.flatfacts.co.uk/public/pages/search-flat/scripts/navigation-config.js"></script>
+```
+
+**🚀 Production (versioned)**
 ```html
 <!-- Styles -->
 <link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/core/styles/form-helpers.css?v=1.0.0">
@@ -82,7 +134,23 @@ public/
 <script src="https://cdn.flatfacts.co.uk/public/pages/search-flat/scripts/navigation-config.js?v=1.0.0"></script>
 ```
 
+---
+
 ### Check Flat
+
+**🔧 Development (no cache)**
+```html
+<!-- Styles -->
+<link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/core/styles/form-helpers.css">
+<link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/core/styles/address-finder.css">
+
+<!-- Scripts -->
+<script src="https://cdn.flatfacts.co.uk/public/core/scripts/common-helpers.js"></script>
+<script src="https://cdn.flatfacts.co.uk/public/core/scripts/navigation-core.js"></script>
+<script src="https://cdn.flatfacts.co.uk/public/pages/check-flat/scripts/navigation-config.js"></script>
+```
+
+**🚀 Production (versioned)**
 ```html
 <!-- Styles -->
 <link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/core/styles/form-helpers.css?v=1.0.0">
@@ -94,11 +162,13 @@ public/
 <script src="https://cdn.flatfacts.co.uk/public/pages/check-flat/scripts/navigation-config.js?v=1.0.0"></script>
 ```
 
-## 🔄 Versioning
+---
 
-**Development:** Use `?v=${Date.now()}` or disable cache in DevTools
+## 💡 Tips
 
-**Production:** Use fixed versions like `?v=1.0.0` and increment when files change
+**Development:** No version params = always fetches latest (disable browser cache in DevTools for best results)
+
+**Production:** Increment version number (`?v=1.0.1`) when you update any file to bust user caches
 
 ## 📋 Deployment
 
