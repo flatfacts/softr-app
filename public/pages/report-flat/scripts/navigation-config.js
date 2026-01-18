@@ -339,26 +339,18 @@ const REPORT_FLAT_NAV_CONFIG = {
     }
 };
 
-// Initialize navigation when form is loaded
+// Attach button listeners when form is loaded
 window.addEventListener('block-loaded-form-report-flat', () => {
-    // Ensure setFormStep is available
+    // Ensure functions are available
     if (typeof setFormStep === 'undefined') {
         console.error('setFormStep is not defined. Make sure navigation-core.js is loaded before navigation-config.js');
         return;
     }
     
-    // Set initial step
-    setFormStep({
-        stepIndex: 0,
-        ...REPORT_FLAT_NAV_CONFIG,
-        callback: function(result) {
-            if (result) {
-                console.log('Initial step set successfully');
-                // Attach button listeners after initial step is set
-                attachNavigationListeners('#form-report-flat', REPORT_FLAT_NAV_CONFIG);
-            } else {
-                console.error('Failed to set initial step');
-            }
-        }
-    });
+    console.log('Navigation config ready, waiting for step initialization...');
+    // Note: Step initialization happens in step-1-address-entry.html
+    // We just attach the button listeners here after a short delay to ensure DOM is ready
+    setTimeout(() => {
+        attachNavigationListeners('#form-report-flat', REPORT_FLAT_NAV_CONFIG);
+    }, 500);
 });
