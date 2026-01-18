@@ -33,23 +33,27 @@ function setFormStep(options) {
         options = { direction: options };
     }
 
+    // Debug: Log what options were received
+    console.log('setFormStep called with options:', Object.keys(options || {}));
+
     const { direction, stepIndex, stepName, callback, stepSignatures, transitions, stepContainers } = options;
 
     // Validation: Ensure required configurations are provided
     if (!stepSignatures || !Array.isArray(stepSignatures) || stepSignatures.length === 0) {
-        console.error('setFormStep: stepSignatures configuration is required');
+        console.error('setFormStep: stepSignatures configuration is required. Received:', typeof stepSignatures);
+        console.error('Full options received:', options);
         if (callback) callback(false);
         return;
     }
 
     if (!transitions || typeof transitions !== 'object') {
-        console.error('setFormStep: transitions configuration is required');
+        console.error('setFormStep: transitions configuration is required. Received:', typeof transitions);
         if (callback) callback(false);
         return;
     }
 
     if (!stepContainers || typeof stepContainers !== 'object') {
-        console.error('setFormStep: stepContainers configuration is required');
+        console.error('setFormStep: stepContainers configuration is required. Received:', typeof stepContainers);
         if (callback) callback(false);
         return;
     }
@@ -138,11 +142,14 @@ function setFormStep(options) {
 
         console.log(`Setting initial step to: ${stepSignatures[targetStepIndex].name}`);
 
-        // Hide all step containers first
+        // Hide all step containers first (move to idle-container)
         for (let i = 0; i < stepSignatures.length; i++) {
             // Hide containers for non-target steps
             if (i !== targetStepIndex && stepContainers[i]) {
-                for (const containerId of stepContainers[i]) {
+                for (const item of stepContainers[i]) {
+                    // Handle both string IDs and object configs
+                    const containerId = typeof item === 'string' ? item : item.id;
+                    
                     const container = await Promise.resolve(__findElement({
                         id: containerId,
                         useTimeout: false
@@ -164,15 +171,21 @@ function setFormStep(options) {
         const targetContainerConfigs = stepContainers[targetStepIndex];
         if (targetContainerConfigs) {
             for (const item of targetContainerConfigs) {
+                // Handle both string IDs and object configs
+                const containerId = typeof item === 'string' ? item : item.id;
+                const target = typeof item === 'string' 
+                    ? { textContent: stepSignatures[targetStepIndex].textIdentifier }
+                    : item.target;
+                
                 const container = await Promise.resolve(__findElement({
-                    id: item.id,
+                    id: containerId,
                     useTimeout: true
                 }));
 
                 if (container && container.length) {
                     await __moveElement({
                         sourceElement: container,
-                        targetElement: item.target,
+                        targetElement: target,
                         useTimeout: true,
                         maxRetries: 20
                     });
