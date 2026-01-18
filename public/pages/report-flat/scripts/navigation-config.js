@@ -339,5 +339,18 @@ const REPORT_FLAT_NAV_CONFIG = {
 
 // Initialize navigation when form is loaded
 window.addEventListener('block-loaded-form-report-flat', () => {
-    attachNavigationListeners('#form-report-flat', REPORT_FLAT_NAV_CONFIG);
+    // Set initial step
+    setFormStep({
+        stepIndex: 0,
+        ...REPORT_FLAT_NAV_CONFIG,
+        callback: function(result) {
+            if (result) {
+                console.log('Initial step set successfully');
+                // Attach button listeners after initial step is set
+                attachNavigationListeners('#form-report-flat', REPORT_FLAT_NAV_CONFIG);
+            } else {
+                console.error('Failed to set initial step');
+            }
+        }
+    });
 });

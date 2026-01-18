@@ -40,40 +40,57 @@ public/
 
 ## 🎬 Usage
 
-### Core Files (all pages)
+### Report Flat
 ```html
-<!-- Add to <head> -->
+<!-- Styles -->
+<link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/core/styles/form-helpers.css?v=1.0.0">
+<link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/core/styles/address-finder.css?v=1.0.0">
+<link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/core/styles/email-verification.css?v=1.0.0">
+<link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/core/styles/social-share.css?v=1.0.0">
+<link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/pages/report-flat/styles/category-selection.css?v=1.0.0">
+<link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/pages/report-flat/styles/score-entry.css?v=1.0.0">
+
+<!-- Scripts -->
+<script src="https://cdn.flatfacts.co.uk/public/core/scripts/common-helpers.js?v=1.0.0"></script>
+<script src="https://cdn.flatfacts.co.uk/public/core/scripts/navigation-core.js?v=1.0.0"></script>
+<script src="https://cdn.flatfacts.co.uk/public/pages/report-flat/scripts/navigation-config.js?v=1.0.0"></script>
+```
+
+### Claim Ownership
+```html
+<!-- Styles -->
 <link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/core/styles/form-helpers.css?v=1.0.0">
 <link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/core/styles/address-finder.css?v=1.0.0">
 <link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/core/styles/email-verification.css?v=1.0.0">
 <link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/core/styles/social-share.css?v=1.0.0">
 
-<!-- Add before </body> -->
+<!-- Scripts -->
 <script src="https://cdn.flatfacts.co.uk/public/core/scripts/common-helpers.js?v=1.0.0"></script>
 <script src="https://cdn.flatfacts.co.uk/public/core/scripts/navigation-core.js?v=1.0.0"></script>
-```
-
-### Page-Specific Files
-
-#### Report Flat
-```html
-<link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/pages/report-flat/styles/category-selection.css?v=1.0.0">
-<link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/pages/report-flat/styles/score-entry.css?v=1.0.0">
-<script src="https://cdn.flatfacts.co.uk/public/pages/report-flat/scripts/navigation-config.js?v=1.0.0"></script>
-```
-
-#### Claim Ownership
-```html
 <script src="https://cdn.flatfacts.co.uk/public/pages/claim-ownership/scripts/navigation-config.js?v=1.0.0"></script>
 ```
 
-#### Search Flat
+### Search Flat
 ```html
+<!-- Styles -->
+<link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/core/styles/form-helpers.css?v=1.0.0">
+<link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/core/styles/address-finder.css?v=1.0.0">
+
+<!-- Scripts -->
+<script src="https://cdn.flatfacts.co.uk/public/core/scripts/common-helpers.js?v=1.0.0"></script>
+<script src="https://cdn.flatfacts.co.uk/public/core/scripts/navigation-core.js?v=1.0.0"></script>
 <script src="https://cdn.flatfacts.co.uk/public/pages/search-flat/scripts/navigation-config.js?v=1.0.0"></script>
 ```
 
-#### Check Flat
+### Check Flat
 ```html
+<!-- Styles -->
+<link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/core/styles/form-helpers.css?v=1.0.0">
+<link rel="stylesheet" href="https://cdn.flatfacts.co.uk/public/core/styles/address-finder.css?v=1.0.0">
+
+<!-- Scripts -->
+<script src="https://cdn.flatfacts.co.uk/public/core/scripts/common-helpers.js?v=1.0.0"></script>
+<script src="https://cdn.flatfacts.co.uk/public/core/scripts/navigation-core.js?v=1.0.0"></script>
 <script src="https://cdn.flatfacts.co.uk/public/pages/check-flat/scripts/navigation-config.js?v=1.0.0"></script>
 ```
 
