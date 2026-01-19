@@ -28,21 +28,16 @@
     try {
       // Load core scripts first (in order)
       await loadJS('core/scripts/common-helpers.js');
-      console.log('✅ common-helpers.js loaded');
-      
       await loadJS('core/scripts/navigation-core.js');
-      console.log('✅ navigation-core.js loaded');
       
       // Load page-specific script last
       await loadJS('pages/report-flat/scripts/navigation-config.js');
-      console.log('✅ navigation-config.js loaded');
       
       // Fire ready event
       window.dispatchEvent(new Event('flatfacts-scripts-ready'));
-      console.log('🚀 All scripts ready');
       
     } catch (error) {
-      console.error('❌ Failed to load scripts:', error);
+      console.error('Failed to load scripts:', error);
     }
   }
   

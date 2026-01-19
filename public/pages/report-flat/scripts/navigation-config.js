@@ -4,8 +4,6 @@
  * @requires common-helpers.js
  */
 
-console.log('🔄 navigation-config.js loaded at', new Date().toISOString());
-
 // Custom update fields function for this page
 function __updateFields(fieldsObj) {
     const updateFieldsObj = new CustomEvent('update-fields-form-report-flat', {
