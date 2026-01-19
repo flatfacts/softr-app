@@ -119,40 +119,29 @@ function setFormStep(options) {
             }
 
             if (element && element.length > 0) {
-                console.log(`Processing hideElement for "${text}" with operation "${operation}"`);
                 // Execute the operation
                 if (operation === "hideParentDiv") {
                     // Use the exact same approach as the original code
                     element.closest('div.de2bf75_1m5yg2g0').hide();
-                    console.log(`✅ Hidden parent div for "${text}"`);
                 } else if (operation === "hide") {
                     element.hide();
-                    console.log(`✅ Hidden element "${text}"`);
                 }
-            } else {
-                console.log(`⚠️ Element not found for "${text}"`);
             }
         }
     }
 
     // Set initial step (without transition animations)
     async function setInitialStep(targetStepIndex) {
-        console.log('🎯 setInitialStep called for index:', targetStepIndex);
-        
         if (targetStepIndex < 0 || targetStepIndex >= stepSignatures.length) {
             console.error(`Invalid step index: ${targetStepIndex}`);
             if (callback) callback(false);
             return false;
         }
 
-        console.log(`Setting initial step to: ${stepSignatures[targetStepIndex].name}`);
-
         // Hide all step containers first (move to idle-container)
-        console.log('🔄 Hiding all non-target step containers...');
         for (let i = 0; i < stepSignatures.length; i++) {
             // Hide containers for non-target steps
             if (i !== targetStepIndex && stepContainers[i]) {
-                console.log(`Hiding containers for step ${i}:`, stepContainers[i]);
                 for (const item of stepContainers[i]) {
                     // Handle both string IDs and object configs
                     const containerId = typeof item === 'string' ? item : item.id;
@@ -163,25 +152,20 @@ function setFormStep(options) {
                     }));
 
                     if (container && container.length) {
-                        console.log(`✅ Found container ${containerId}, moving to idle`);
                         // Move to idle container
                         await __moveElement({
                             sourceElement: container,
                             targetElement: { id: "idle-container" },
                             moveInside: true
                         });
-                    } else {
-                        console.log(`⚠️ Container ${containerId} not found`);
                     }
                 }
             }
         }
 
         // Now show the target step containers
-        console.log('🔄 Showing target step containers for step', targetStepIndex);
         const targetContainerConfigs = stepContainers[targetStepIndex];
         if (targetContainerConfigs) {
-            console.log('Target containers config:', targetContainerConfigs);
             for (const item of targetContainerConfigs) {
                 // Handle both string IDs and object configs
                 const containerId = typeof item === 'string' ? item : item.id;
@@ -189,31 +173,25 @@ function setFormStep(options) {
                     ? { textContent: stepSignatures[targetStepIndex].textIdentifier }
                     : item.target;
                 
-                console.log(`Looking for container ${containerId}...`);
                 const container = await Promise.resolve(__findElement({
                     id: containerId,
                     useTimeout: true
                 }));
 
                 if (container && container.length) {
-                    console.log(`✅ Found container ${containerId}, moving to target`, target);
                     await __moveElement({
                         sourceElement: container,
                         targetElement: target,
                         useTimeout: true,
                         maxRetries: 20
                     });
-                } else {
-                    console.log(`⚠️ Container ${containerId} not found`);
                 }
             }
         }
 
         // Process any hiding operations for the target step
-        console.log('🔄 Processing hideElements for target step...');
         await processHideElements(stepSignatures[targetStepIndex]);
 
-        console.log('✅ Initial step setup complete');
         if (callback) callback(true);
         return true;
     }
@@ -247,14 +225,9 @@ function setFormStep(options) {
         await processHideElements(stepSignatures[toStep]);
 
         // Execute step-specific handlers if they exist
-        console.log(`🔍 Checking for handler on step ${toStep} (${stepSignatures[toStep].name})...`);
         const stepHandler = stepSignatures[toStep].handler;
         if (stepHandler && typeof stepHandler === 'function') {
-            console.log(`✅ Handler found, executing for step: ${stepSignatures[toStep].name}`);
             await stepHandler();
-            console.log(`✅ Handler completed for step: ${stepSignatures[toStep].name}`);
-        } else {
-            console.log(`ℹ️ No handler defined for step: ${stepSignatures[toStep].name}`);
         }
 
         if (callback) callback(true);
@@ -263,8 +236,6 @@ function setFormStep(options) {
 
     // Main execution
     async function execute() {
-        console.log('🚀 execute() called with stepIndex:', stepIndex, 'stepName:', stepName, 'direction:', direction);
-        
         // If stepIndex or stepName is provided, set initial step
         if (stepIndex !== undefined || stepName !== undefined) {
             let targetStepIndex = stepIndex;
@@ -279,13 +250,11 @@ function setFormStep(options) {
                 }
             }
 
-            console.log('📍 Calling setInitialStep with index:', targetStepIndex);
             // Set initial step
             return setInitialStep(targetStepIndex);
         }
 
         // Otherwise handle transitions based on direction
-        console.log('🔄 No stepIndex provided, detecting current step...');
         const currentStep = await detectCurrentStep();
 
         if (currentStep === -1) {
@@ -294,14 +263,11 @@ function setFormStep(options) {
             return;
         }
 
-        console.log(`Current step: ${stepSignatures[currentStep].name}`);
-
         let targetStep;
         if (direction.toLowerCase() === "next") {
             // Validate current step before moving to next
             const isValid = await validateCurrentStep(currentStep);
             if (!isValid) {
-                console.log("Validation failed. Staying on current step.");
                 if (callback) callback(false);
                 return;
             }
@@ -338,22 +304,16 @@ function setFormStep(options) {
  * @param {string} formSelector - jQuery selector for the form container
  */
 function attachNavigationListeners(formSelector, navigationConfig) {
-    console.log('🔗 attachNavigationListeners called with selector:', formSelector);
-    
     // Function to attach click events to buttons with "Next" or "Previous" text
     function attachButtonListeners() {
         const buttons = $(`${formSelector} button`);
-        console.log(`🔍 Found ${buttons.length} buttons in ${formSelector}`);
         
         buttons.each(function () {
             const buttonText = $(this).text();
-            console.log('  Button text:', buttonText);
 
             // Check if the button contains "Next" or "Previous"
             if (buttonText.includes('Next') || buttonText.includes('Previous') || buttonText.includes('Finish')) {
-                console.log(`  ✅ Attaching listener to button: "${buttonText}"`);
                 $(this).off('click').on('click', function () {
-                    console.log(`🖱️ ${buttonText} button clicked`);
 
                     if (buttonText.includes('Next')) {
                         setFormStep({

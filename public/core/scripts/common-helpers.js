@@ -69,25 +69,9 @@ function __findElement(options) {
                 return $(this).text().includes(textContent);
             });
         } else if (labelContent) {
-            console.log(`🔍 Searching for label with content: "${labelContent}"`);
-            const allLabels = $("label span");
-            console.log(`Found ${allLabels.length} label spans total`);
-            
-            element = allLabels.filter(function () {
-                const text = $(this).text().trim();
-                const matches = text === labelContent;
-                if (matches) {
-                    console.log(`✅ Found matching label: "${text}"`);
-                }
-                return matches;
+            element = $("label span").filter(function () {
+                return $(this).text().trim() === labelContent;
             }).closest('label');
-            
-            if (!element || !element.length) {
-                console.log(`❌ No label found with exact text "${labelContent}"`);
-                console.log('Sample label texts:', allLabels.slice(0, 10).map(function() {
-                    return $(this).text().trim();
-                }).get());
-            }
         } else if (id) {
             element = $(`#${id}`);
         } else if (selector) {

@@ -14,26 +14,34 @@ public/
 │       └── social-share.css
 ├── pages/
 │   ├── report-flat/
+│   │   ├── html/
+│   │   │   └── custom-elements.html      # Page-specific containers
 │   │   ├── scripts/
 │   │   │   └── navigation-config.js
 │   │   └── styles/
 │   │       ├── category-selection.css
 │   │       └── score-entry.css
 │   ├── claim-ownership/
+│   │   ├── html/
+│   │   │   └── custom-elements.html      # Page-specific containers
 │   │   ├── scripts/
 │   │   │   └── navigation-config.js
 │   │   └── styles/
 │   ├── check-flat/
+│   │   ├── html/
+│   │   │   └── custom-elements.html      # Page-specific containers
 │   │   ├── scripts/
 │   │   │   └── navigation-config.js
 │   │   └── styles/
 │   └── search-flat/
+│       ├── html/
+│       │   └── custom-elements.html      # Page-specific containers
 │       ├── scripts/
 │       │   └── navigation-config.js
 │       └── styles/
 ├── components/
 ├── html/
-│   └── common-elements.html
+│   └── common-elements.html              # Common elements shared across all pages
 ├── README.md
 └── example-usage.html
 ```
@@ -164,7 +172,39 @@ public/
 
 ---
 
-## 💡 Tips
+## � HTML Elements
+
+Each page needs to include **both** common and page-specific HTML elements in Softr:
+
+### Common Elements (All Pages)
+```html
+<!-- Include in all forms -->
+<div data-block-name="custom-code-1">
+  <!-- Paste content from: https://cdn.flatfacts.co.uk/public/html/common-elements.html -->
+</div>
+```
+
+### Page-Specific Elements
+
+**Report Flat:**
+```html
+<div data-block-name="custom-code-2">
+  <!-- Paste content from: https://cdn.flatfacts.co.uk/public/pages/report-flat/html/custom-elements.html -->
+  <!-- Contains: categories-container, scores-container -->
+</div>
+```
+
+**Claim Ownership, Search Flat, Check Flat:**
+```html
+<div data-block-name="custom-code-2">
+  <!-- Paste content from: https://cdn.flatfacts.co.uk/public/pages/{page-name}/html/custom-elements.html -->
+  <!-- Only if page requires specific containers -->
+</div>
+```
+
+---
+
+## �💡 Tips
 
 **Development:** No version params = always fetches latest (disable browser cache in DevTools for best results)
 
