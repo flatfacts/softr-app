@@ -33,9 +33,6 @@ function setFormStep(options) {
         options = { direction: options };
     }
 
-    // Debug: Log what options were received
-    console.log('setFormStep called with options:', Object.keys(options || {}));
-
     const { direction, stepIndex, stepName, callback, stepSignatures, transitions, stepContainers } = options;
 
     // Validation: Ensure required configurations are provided
